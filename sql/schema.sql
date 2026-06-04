@@ -16,6 +16,10 @@ CREATE TABLE IF NOT EXISTS bronze.raw_rates(
 	inserted_at varchar(225)
 );
 
+ALTER TABLE bronze.raw_rates
+ADD CONSTRAINT uq_raw_rates_date_base
+UNIQUE (fetch_date, base_currency);
+
 ----------------------------------------- Silver Table Creation ------------------------------------------------------------------
 CREATE SEQUENCE IF NOT EXISTS silver.seq_cleaned_rates
 	START WITH 1
@@ -76,3 +80,17 @@ CREATE TABLE IF NOT EXISTS gold.fct_aggregated_rates(
 	CONSTRAINT dim_dates_fk FOREIGN KEY (date) REFERENCES gold.dim_dates (date_id),
 	CONSTRAINT dim_currencies_fk FOREIGN KEY (target_currency) REFERENCES gold.dim_currencies (currency_code)
 );
+
+
+--SELECT * FROM bronze.raw_rates rr;
+--SELECT * FROM silver.cleaned_rates;
+--
+--CALL gold.load_dim_currencies();
+--SELECT * FROM gold.dim_currencies dc;
+--
+--CALL gold.load_dim_dates();
+--SELECT * FROM gold.dim_dates dd;
+--
+--CALL gold.load_fct_rates();
+--SELECT * FROM gold.fct_aggregated_rates far;
+
